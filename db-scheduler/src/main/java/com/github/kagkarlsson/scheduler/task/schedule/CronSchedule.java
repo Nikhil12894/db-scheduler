@@ -41,21 +41,25 @@ public class CronSchedule implements Schedule {
     private final ExecutionTime cronExecutionTime;
 
     public CronSchedule(String pattern, ZoneId zoneId) {
-        this.pattern = pattern;
-        CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.SPRING));
-        Cron cron = parser.parse(pattern);
-        this.cronExecutionTime = ExecutionTime.forCron(cron);
-
-        if (zoneId == null) {
-            throw new IllegalArgumentException("zoneId may not be null");
-        }
-        this.zoneId = zoneId;
+        this.CronSchedule(pattern,zoneId,CronType.SPRING)
     }
+public CronSchedule(String pattern, ZoneId zoneId, CronType type) {
+		this.pattern = pattern;
+		CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(type));
+		Cron cron = parser.parse(pattern);
+		this.cronExecutionTime = ExecutionTime.forCron(cron);
 
+		if (zoneId == null) {
+			throw new IllegalArgumentException("zoneId may not be null");
+		}
+		this.zoneId = zoneId;
+	}
     public CronSchedule(String pattern) {
         this(pattern, ZoneId.systemDefault());
     }
-
+public CronSchedule(String pattern, CronType type) {
+		this(pattern, ZoneId.systemDefault(), type);
+	}
     @Override
     public Instant getNextExecutionTime(ExecutionComplete executionComplete) {
         ZonedDateTime lastDone = ZonedDateTime.ofInstant(executionComplete.getTimeDone(), zoneId);  //frame the 'last done' time in the context of the time zone for this schedule
