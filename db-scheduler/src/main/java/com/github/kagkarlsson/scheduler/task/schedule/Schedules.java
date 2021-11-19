@@ -38,6 +38,13 @@ public class Schedules {
     public static Schedule cron(String cronPattern) {
         return new CronSchedule(cronPattern);
     }
+public static Schedule cron(String cronPattern, CronType type) {
+		return new CronSchedule(cronPattern, type);
+	}
+
+	public static Schedule cron(String cronPattern, ZoneId zoneId, CronType type) {
+		return new CronSchedule(cronPattern, zoneId, type);
+	}
 
     public static Schedule cron(String cronPattern, ZoneId zoneId) {
         return new CronSchedule(cronPattern, zoneId);
